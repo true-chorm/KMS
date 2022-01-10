@@ -1,0 +1,123 @@
+﻿<Window x:Class="KMS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KMS"
+		xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="键鼠计数器" Height="410" Width="300" Closing="Window_Closing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+	<StackPanel>
+		<GroupBox
+            Header="全局键盘统计"
+            Margin="5,2,5,10"
+            Height="150">
+
+			<Grid Margin="0, 5, 0, 0">
+
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="90"/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Text="键盘按键总计：" HorizontalAlignment="Right" Grid.Row="0"/>
+				<TextBlock Text="组合键总计：" HorizontalAlignment="Right" Grid.Row="1"/>
+				<TextBlock Text="单键Top1：" HorizontalAlignment="Right" Grid.Row="2"/>
+				<TextBlock Text="单键Top2：" HorizontalAlignment="Right" Grid.Row="3"/>
+				<TextBlock Text="单键Top3：" HorizontalAlignment="Right" Grid.Row="4"/>
+				<TextBlock Text="单键Top4：" HorizontalAlignment="Right" Grid.Row="5"/>
+				<TextBlock Text="单键Top5：" HorizontalAlignment="Right" Grid.Row="6"/>
+
+				<TextBlock Name="KbTotal" Text="" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1"/>
+				<TextBlock Name="ComboTotal" Text="" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1"/>
+				<TextBlock Name="SkTop1" Text="" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"/>
+				<TextBlock Name="SkTop2" Text="" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1"/>
+				<TextBlock Name="SkTop3" Text="" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1"/>
+				<TextBlock Name="SkTop4" Text="" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="1"/>
+				<StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+					<TextBlock Name="SkTop5" Text="" HorizontalAlignment="Left" Width="140"/>
+					<TextBlock Text="详细" Foreground="Blue" FontSize="12" Width="28" TextDecorations="UnderLine" TextAlignment="Right" VerticalAlignment="Center" MouseLeftButtonDown="GlobalDetail" />
+				</StackPanel>
+			</Grid>
+		</GroupBox>
+
+		<GroupBox
+            Header="全局鼠标统计"
+            Margin="5,2,5,10"
+            Height="95">
+
+			<Grid Margin="0, 5, 0, 0">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="90"/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Text="左键总计：" HorizontalAlignment="Right" Grid.Row="0"/>
+				<TextBlock Text="右键总计：" HorizontalAlignment="Right" Grid.Row="1"/>
+				<TextBlock Text="滑轮前向：" HorizontalAlignment="Right" Grid.Row="2"/>
+				<TextBlock Text="滑轮后向：" HorizontalAlignment="Right" Grid.Row="3"/>
+
+				<TextBlock Name="MsLeftBtn" Text="" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1"/>
+				<TextBlock Name="MsRightBtn" Text="" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1"/>
+				<TextBlock Name="MsWheelForward" Text="" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"/>
+				<TextBlock Name="MsWheelBackward" Text="" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1"/>
+
+			</Grid>
+
+		</GroupBox>
+
+		<GroupBox
+            Header="今日统计"
+            Margin="5,2,5,10"
+            Height="80">
+
+			<Grid Margin="0, 5, 0, 0">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="90"/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Text="键盘按键总计：" HorizontalAlignment="Right" Grid.Row="0"/>
+				<TextBlock Text="鼠标事件总计：" HorizontalAlignment="Right" Grid.Row="1"/>
+				<TextBlock Text="操作最多时段：" HorizontalAlignment="Right" Grid.Row="3"/>
+
+				<TextBlock Name="KbAllToday" Text="" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1"/>
+				<TextBlock Name="MsAllToday" Text="" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1"/>
+				<TextBlock Name="MostOpHourToday" Text="" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1"/>
+
+			</Grid>
+
+		</GroupBox>
+	</StackPanel>
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<sys:String x:Key="exit">
+				退出
+			</sys:String>
+		</ResourceDictionary>
+	</Window.Resources>
+</Window>
