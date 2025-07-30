@@ -588,9 +588,9 @@ namespace KMS.src.core
                 statisticGlobal.KeyboardTotal.Value++;
                 statisticGlobal.KeyboardTotal.Desc = GetDesc1(statisticGlobal.KeyboardTotal.Value);
 
-                statisticYear.KeyboardTotal.Value++;
-                statisticMonth.KeyboardTotal.Value++;
-                statisticDay.KeyboardTotal.Value++;
+                //statisticYear.KeyboardTotal.Value++;
+                //statisticMonth.KeyboardTotal.Value++;
+                //statisticDay.KeyboardTotal.Value++;
                 //跨日处理
                 if ((time.Hour == 0) && (time.Day != TimeManager.TimeUsing.Day))
                 {
@@ -613,9 +613,9 @@ namespace KMS.src.core
                     statisticGlobal.KeyboardComboTotal.Value++;
                     statisticGlobal.KeyboardComboTotal.Desc = GetDesc1(statisticGlobal.KeyboardComboTotal.Value);
 
-                    statisticYear.KeyboardComboTotal.Value++;
-                    statisticMonth.KeyboardComboTotal.Value++;
-                    statisticDay.KeyboardComboTotal.Value++;
+                    //statisticYear.KeyboardComboTotal.Value++;
+                    //statisticMonth.KeyboardComboTotal.Value++;
+                    //statisticDay.KeyboardComboTotal.Value++;
                 }
 
                 KbSingleKeyPressed(typeCode);
@@ -740,9 +740,9 @@ namespace KMS.src.core
         private void KbSingleKeyPressed(int keycode)
         {
             SingleKeyRecord(statisticGlobal.KeyboardKeys, (byte)keycode);
-            SingleKeyRecord(statisticYear.KeyboardKeys, (byte)keycode);
-            SingleKeyRecord(statisticMonth.KeyboardKeys, (byte)keycode);
-            SingleKeyRecord(statisticDay.KeyboardKeys, (byte)keycode);
+            //SingleKeyRecord(statisticYear.KeyboardKeys, (byte)keycode);
+            //SingleKeyRecord(statisticMonth.KeyboardKeys, (byte)keycode);
+            //SingleKeyRecord(statisticDay.KeyboardKeys, (byte)keycode);
 
             statisticGlobal.SortKeys();
             if (statisticGlobal.KeyboardKeys[0].Value > 0)

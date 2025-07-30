@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KMS"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="键鼠计数器" Height="410" Width="300" Closing="Window_Closing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="键鼠计数器" Height="420" Width="300" Closing="Window_Closing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 	<StackPanel>
 		<GroupBox
             Header="全局键盘统计"

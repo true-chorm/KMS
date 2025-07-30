@@ -1,6 +1,8 @@
 ﻿using KMS.src.tool;
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Documents;
+using System.Windows.Forms;
 
 namespace KMS.src.core
 {
@@ -35,6 +37,8 @@ namespace KMS.src.core
         public static extern IntPtr GetModuleHandle(string name);
         [DllImport("user32.dll")]
         public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam); //parameter 'hhk' is ignored.
+        [DllImport("user32.dll")]
+        public static extern int keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtralInfo);
 
 
         private static int KeyboardHookCallback(int code, IntPtr wParam, IntPtr lParam)
@@ -44,13 +48,48 @@ namespace KMS.src.core
                 //TODO 把异常事件记录下来。写到数据库中。
                 return CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
             }
-            else
+
+            khd = (Keyboard_LL_Hook_Data)Marshal.PtrToStructure(lParam, typeof(Keyboard_LL_Hook_Data));
+            EventQueue.enqueue(Constants.HookEvent.KEYBOARD_EVENT, (short)wParam.ToInt32(), (short)khd.vkCode, 0, 0);
+            if (keyMappingHook(wParam.ToInt32(), khd.vkCode)) return 1;
+
+            return CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
+        }
+
+        private static bool lctlPressed = false;
+
+        private static Boolean keyMappingHook(int w, int kc)
+        {
+            Boolean ret = false;
+
+            if (w == Constants.KeyEvent.WM_KEYDOWN)
             {
-                khd = (Keyboard_LL_Hook_Data)Marshal.PtrToStructure(lParam, typeof(Keyboard_LL_Hook_Data));
-                EventQueue.enqueue(Constants.HookEvent.KEYBOARD_EVENT, (short)wParam.ToInt32(), (short)khd.vkCode, 0, 0);
+                switch (kc)
+                {
+                    case Constants.TypeNumber.LEFT_CTRL:
+                        lctlPressed = true;
+                        break;
+                    case Constants.TypeNumber.SPACE_BAR:
+                        if (lctlPressed)
+                        {
+                            keybd_event(0xa6, 0, 0, UIntPtr.Zero);
+                            keybd_event(0xa6, 0, 2, UIntPtr.Zero);
+                            ret = true;
+                        }
+                        break;
+                }
+            }
+            else if (w == Constants.KeyEvent.WM_KEYUP)
+            {
+                switch (kc)
+                {
+                    case Constants.TypeNumber.LEFT_CTRL:
+                        lctlPressed = false;
+                        break;
+                }
             }
 
-            return 0;
+            return ret;
         }
 
         private static int MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
@@ -95,7 +134,7 @@ namespace KMS.src.core
         //安装钩子方法
         private static bool InsertKeyboardHook()
         {
-            Logger.v(TAG, "InsertKeyboardHook()");
+            Logger.v(TAG, "InsertKeyboardHook");
             if (pKeyboardHook == IntPtr.Zero)//不存在钩子时
             {
                 //创建钩子

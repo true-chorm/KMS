@@ -46,7 +46,7 @@ namespace KMS.src.core
             while (CanThreadRun)
             {
                 Statistic();
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }
             Logger.v(TAG, "ThreadProc() end");
         }
