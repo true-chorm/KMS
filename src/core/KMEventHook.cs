@@ -1,8 +1,6 @@
 ﻿using KMS.src.tool;
 using System;
 using System.Runtime.InteropServices;
-using System.Windows.Documents;
-using System.Windows.Forms;
 
 namespace KMS.src.core
 {
@@ -39,7 +37,8 @@ namespace KMS.src.core
         public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam); //parameter 'hhk' is ignored.
         [DllImport("user32.dll")]
         public static extern int keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtralInfo);
-
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
 
         private static int KeyboardHookCallback(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -51,45 +50,9 @@ namespace KMS.src.core
 
             khd = (Keyboard_LL_Hook_Data)Marshal.PtrToStructure(lParam, typeof(Keyboard_LL_Hook_Data));
             EventQueue.enqueue(Constants.HookEvent.KEYBOARD_EVENT, (short)wParam.ToInt32(), (short)khd.vkCode, 0, 0);
-            if (keyMappingHook(wParam.ToInt32(), khd.vkCode)) return 1;
+            if (KeyRemapping.RemappingCheck(wParam.ToInt32(), khd.vkCode)) return 1;
 
             return CallNextHookEx(IntPtr.Zero, code, wParam, lParam);
-        }
-
-        private static bool lctlPressed = false;
-
-        private static Boolean keyMappingHook(int w, int kc)
-        {
-            Boolean ret = false;
-
-            if (w == Constants.KeyEvent.WM_KEYDOWN)
-            {
-                switch (kc)
-                {
-                    case Constants.TypeNumber.LEFT_CTRL:
-                        lctlPressed = true;
-                        break;
-                    case Constants.TypeNumber.SPACE_BAR:
-                        if (lctlPressed)
-                        {
-                            keybd_event(0xa6, 0, 0, UIntPtr.Zero);
-                            keybd_event(0xa6, 0, 2, UIntPtr.Zero);
-                            ret = true;
-                        }
-                        break;
-                }
-            }
-            else if (w == Constants.KeyEvent.WM_KEYUP)
-            {
-                switch (kc)
-                {
-                    case Constants.TypeNumber.LEFT_CTRL:
-                        lctlPressed = false;
-                        break;
-                }
-            }
-
-            return ret;
         }
 
         private static int MouseHookCallback(int code, IntPtr wParam, IntPtr lParam)
@@ -106,6 +69,7 @@ namespace KMS.src.core
                     mhd = (Mouse_LL_Hook_Data)Marshal.PtrToStructure(lParam, typeof(Mouse_LL_Hook_Data));
                     EventQueue.enqueue(Constants.HookEvent.MOUSE_EVENT, (short)wParam.ToInt32(), (short)(mhd.mouseData >> 16),
                         (short)(mhd.yx & 0xffffffff), (short)(mhd.yx >> 32));
+                    KeyRemapping.mouseKeyEvtOccured();
                 }
             }
 
